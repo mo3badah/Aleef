@@ -1,0 +1,8 @@
+.classpath
+.project
+.settings/
+.idea/
+esc-pos-java.iml
+escposjava.iml
+dependency-reduced-pom.xml
+target/

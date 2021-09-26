@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxWidth="1309.0" prefHeight="766.0" prefWidth="1366.0" stylesheets="@../styleSheet/signIn.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.signIn">
+   <children>
+      <VBox layoutX="-15.0" prefHeight="632.0" prefWidth="1309.0">
+         <children>
+            <HBox prefHeight="250.0" prefWidth="1565.0">
+               <children>
+                  <ImageView fitHeight="176.0" fitWidth="260.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@IMG_20210121_202015.jpg" />
+                     </image>
+                     <HBox.margin>
+                        <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="عالم أليف" textAlignment="CENTER" wrappingWidth="1304.7294921875">
+                     <styleClass>
+                        <String fx:value="txt-center" />
+                        <String fx:value="container" />
+                     </styleClass>
+                     <fill>
+                        <RadialGradient centerX="0.5" centerY="0.4519230769230769" radius="0.5">
+                           <stops>
+                              <Stop color="BLACK" />
+                              <Stop color="WHITE" offset="1.0" />
+                           </stops>
+                        </RadialGradient>
+                     </fill>
+                     <font>
+                        <Font size="91.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="50.0" top="50.0" />
+                     </HBox.margin>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox prefHeight="114.0" prefWidth="1565.0">
+               <children>
+                  <TextField fx:id="userName" prefHeight="113.0" prefWidth="853.0" promptText="اسم المستخدم">
+                     <styleClass>
+                        <String fx:value="card" />
+                        <String fx:value="fn-32" />
+                        <String fx:value="txt-center" />
+                        <String fx:value="shadow" />
+                     </styleClass>
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Label prefHeight="150.0" prefWidth="459.0" text="اسم المستخدم" textAlignment="CENTER">
+                     <styleClass>
+                        <String fx:value="card" />
+                        <String fx:value="fn-32" />
+                     </styleClass>
+                     <graphic>
+                        <ImageView fitHeight="115.0" fitWidth="139.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/id-card.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox prefHeight="98.0" prefWidth="492.0">
+               <children>
+                  <PasswordField fx:id="password" prefHeight="126.0" prefWidth="856.0" promptText="الرقم السري">
+                     <styleClass>
+                        <String fx:value="fn-32" />
+                        <String fx:value="card" />
+                        <String fx:value="txt-center" />
+                        <String fx:value="shadow" />
+                     </styleClass>
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </HBox.margin>
+                  </PasswordField>
+                  <Label prefHeight="150.0" prefWidth="456.0" text="الرقم السري" textAlignment="CENTER">
+                     <styleClass>
+                        <String fx:value="card" />
+                        <String fx:value="fn-32" />
+                     </styleClass>
+                     <graphic>
+                        <ImageView fitHeight="113.0" fitWidth="135.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/padlock.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <Label fx:id="loginText" prefHeight="52.0" prefWidth="1310.0" styleClass="fn-32" />
+            <Button fx:id="signButton" blendMode="DARKEN" mnemonicParsing="false" onAction="#buttonAlert" prefHeight="91.0" prefWidth="1339.0" text="تسجيل الدخول">
+               <VBox.margin>
+                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+               </VBox.margin>
+               <graphic>
+                  <ImageView fitHeight="77.0" fitWidth="163.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/sign-in.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+         <styleClass>
+            <String fx:value="fn-18" />
+            <String fx:value="fn-32" />
+         </styleClass>
+      </VBox>
+   </children>
+</AnchorPane>

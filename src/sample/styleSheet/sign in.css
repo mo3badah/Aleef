@@ -1,0 +1,104 @@
+/* font sizes */
+
+.fn-14 {
+    -fx-font-size: 14px;
+}
+.fn-16 {
+    -fx-font-size: 16px;
+}
+.fn-18 {
+    -fx-font-size: 18px;
+}
+.fn-24 {
+    -fx-font-size: 24px;
+}
+.fn-32 {
+    -fx-font-size: 24px;
+    -fx-font-family: AlArabiya;
+}
+.fn-48 {
+    -fx-font-size: 48px;
+}
+.fn-64 {
+    -fx-font-size: 64px;
+}
+/* text allignment */
+.txt-center {
+    -fx-text-alignment: center;
+}
+.txt-justify {
+    -fx-text-alignment: justify;
+}
+.txt-left {
+    -fx-text-alignment: left;
+}
+.txt-right {
+    -fx-text-alignment: right;
+}
+/* fill color */
+.fill-light-gray {
+    -fx-fill: #ececec;
+    -fx-text-fill: #ececec;
+}
+.fill-gray {
+    -fx-fill: #9c9c9c;
+    -fx-text-fill: #9c9c9c;
+}
+.fill-dark {
+    -fx-fill: #4f5d55;
+    -fx-text-fill: #4f5d55;
+}
+.fill-white {
+    -fx-fill: #ffffff;
+    -fx-text-fill: #ffffff;
+}
+/* background colors    */
+.back-white {
+    -fx-background-color: white;
+}
+.back-transparent {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0px;
+}
+.gradient-color {
+    -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #ffffff, #ececec);
+}
+
+.shadow {
+    -fx-effect: dropShadow(three-pass-box, rgba(0,0,0,.2), 10.0, 0.0, 0.0, 10.0);
+}
+.chart-background {
+    -fx-background-color: transparent;
+}
+.button-container-mouse-moved:hover{
+    -fx-background-color: rgba(186, 131, 131, 0.1);
+}
+.button-container-selected {
+    -fx-background-color: rgba(177, 134, 134, 0.1);
+}
+.card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15px;
+    -fx-effect: dropShadow(three-pass-box, rgba(0,0,0,.2), 10.0, 0.0, 0.0, 10.0);
+    -fx-end-margin: 25px;
+    -fx-start-margin: 25px;
+    -fx-text-alignment: center;
+}
+.button {
+    -fx-font-size: 20px;
+    -fx-font-family: AlArabiya;
+    -fx-text-alignment: center;
+
+    -fx-effect: dropShadow(three-pass-box, rgba(0,0,0,.2), 10.0, 0.0, 0.0, 10.0);
+    -fx-background-radius: 15px;
+
+}
+.margin1 {
+    -fx-end-margin: 1;
+    -fx-start-margin: 1;
+
+}
+.fn-32 {
+    -fx-font-size: 24px;
+    -fx-font-family: AlArabiya;
+}
