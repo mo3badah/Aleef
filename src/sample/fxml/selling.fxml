@@ -211,15 +211,47 @@
             </HBox>
             <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="printing2" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="75.0" prefWidth="425.0" stylesheets="@../styleSheet/selling..css" text="طباعة" textAlignment="CENTER" textFill="#1cda32">
+                  <Button fx:id="printing2" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="75.0" prefWidth="312.0" stylesheets="@../styleSheet/selling..css" text="طباعة" textAlignment="CENTER" textFill="#1cda32">
                      <styleClass>
                         <String fx:value="hover-hand" />
                         <String fx:value="hover-gray" />
                      </styleClass>
                      <HBox.margin>
-                        <Insets left="60.0" />
+                        <Insets bottom="5.0" left="5.0" right="20.0" top="5.0" />
                      </HBox.margin>
                   </Button>
+                  <VBox prefHeight="96.0" prefWidth="214.0">
+                     <children>
+                        <Label alignment="CENTER" prefHeight="56.0" prefWidth="231.0" style="-fx-background-radius: 50;" text="الدليفري">
+                           <styleClass>
+                              <String fx:value="back-transparent" />
+                              <String fx:value="fill-gray" />
+                              <String fx:value="fn-32" />
+                              <String fx:value="txt-center" />
+                              <String fx:value="shadow" />
+                           </styleClass>
+                           <stylesheets>
+                              <URL value="@../styleSheet/selling..css" />
+                              <URL value="@../styleSheet/selling..css" />
+                           </stylesheets>
+                           <VBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextField fx:id="idelivery" alignment="CENTER" prefHeight="45.0" prefWidth="210.0" stylesheets="@../styleSheet/selling..css">
+                           <styleClass>
+                              <String fx:value="txt-center" />
+                              <String fx:value="card" />
+                           </styleClass>
+                           <VBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Arial Black" size="24.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </VBox>
                </children>
             </HBox>
          </children>

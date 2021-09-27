@@ -294,6 +294,5 @@ public class userdata implements Initializable {
         getGenerated(id);
         printNode(getPrintableText());
         sample.controller.selling.setIsmod(false);
-
     }
 }
