@@ -2,6 +2,7 @@ package sample.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,15 +18,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import sample.Main;
 
-import java.math.BigInteger;
 import java.net.URL;
 import java.sql.*;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Observable;
 import java.util.ResourceBundle;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class selling implements Initializable {
@@ -218,8 +214,9 @@ public class selling implements Initializable {
 
     public void initialize(URL location, ResourceBundle resources) {
         setSellingTable();
-        System.out.println(timeNow());
-//        initializeCombo();
+        if (ismod){
+            fetchModify(idmod);
+        }
         iqun.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             updateUnitPrice();
         });
@@ -228,6 +225,14 @@ public class selling implements Initializable {
             public void handle(KeyEvent event) {
                 if (event.getCode().equals(KeyCode.ENTER)) {
                     fetchData();
+                }
+            }
+        });
+        Tphone.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    fetchِAuto(Integer.parseInt(Tphone.getText()));
                 }
             }
         });
@@ -240,500 +245,40 @@ public class selling implements Initializable {
         RadioButton selectedRadioButton = (RadioButton) x.getSelectedToggle();
         return selectedRadioButton.getId();
     }
-    /*
-    // Classic Buttons
 
-    public void buttonQuar(javafx.event.ActionEvent actionEvent) throws SQLException {
-        Double kilo = 0.0 ;
-        String typeId = null;
+    public void fetchModify(int id){
+        ResultSet dbResAllTotal;
         try {
-            typeId = checkKlasicTypes(type);
-        }catch (Exception e){
-            String selection = "من فضلك ادخل النوع اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
-        }
-        String sqlscript = "SELECT * from kunafahut.types where id = '" + typeId + "'";
-        dbResSell = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeQuery(sqlscript);
-        while (dbResSell.next()) {
-            Otype = dbResSell.getString("type");
-            Oname = dbResSell.getString("name");
-            kilo = Double.valueOf(dbResSell.getString("big"));
-        }
-        Ono = .25;
-        Oquantity = "كيلو";
-        Oprice = kilo/4;
-        onePrice.setText(String.valueOf(Oprice));
-    }
-
-    public void buttonHalf(javafx.event.ActionEvent actionEvent) throws SQLException {
-        Double kilo = 0.0 ;
-        String typeId = null;
-        try {
-            typeId = checkKlasicTypes(type);
-        }catch (Exception e){
-            String selection = "من فضلك ادخل النوع اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
-        }
-        String sqlscript = "SELECT * from kunafahut.types where id = '" + typeId + "'";
-        dbResSell = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeQuery(sqlscript);
-        while (dbResSell.next()) {
-            Otype = dbResSell.getString("type");
-            Oname = dbResSell.getString("name");
-            kilo = Double.valueOf(dbResSell.getString("big"));
-        }
-        Ono = .5;
-        Oquantity = "كيلو";
-        Oprice = kilo/2;
-        onePrice.setText(String.valueOf(Oprice));
-
-
-    }
-
-    public void buttonKilo(javafx.event.ActionEvent actionEvent) throws SQLException {
-        Double kilo = 0.0 ;
-        String typeId = null;
-        try {
-            typeId = checkKlasicTypes(type);
-        }catch (Exception e){
-            String selection = "من فضلك ادخل النوع اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
-        }
-        String sqlscript = "SELECT * from kunafahut.types where id = '" + typeId + "'";
-        dbResSell = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeQuery(sqlscript);
-        while (dbResSell.next()) {
-            Otype = dbResSell.getString("type");
-            Oname = dbResSell.getString("name");
-            kilo = Double.valueOf(dbResSell.getString("big"));
-        }
-        Ono = 1.0;
-        Oquantity = "كيلو";
-        Oprice = kilo;
-        onePrice.setText(String.valueOf(Oprice));
-
-
-    }
-
-    public void buttonKiloEnter(javafx.event.ActionEvent actionEvent) throws SQLException {
-        Double kilo = 0.0 ;
-        Double gramenter = 1000.0 ;
-        String typeId = null;
-        try {
-            gramenter = Double.valueOf(gramno.getText());
-        }
-        catch (Exception e){
-            String selection = "من فضلك ادخل عدد الجرامات صحيح اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
-        }
-
-        try {
-            typeId = checkKlasicTypes(type);
-        }catch (Exception e){
-            String selection = "من فضلك ادخل النوع اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
-        }
-        String sqlscript = "SELECT * from kunafahut.types where id = '" + typeId + "'";
-        dbResSell = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeQuery(sqlscript);
-        while (dbResSell.next()) {
-            Otype = dbResSell.getString("type");
-            Oname = dbResSell.getString("name");
-            kilo = Double.valueOf(dbResSell.getString("big"));
-        }
-        Ono = gramenter/1000;
-        Oquantity = "كيلو";
-        Oprice = kilo*gramenter/1000;
-        onePrice.setText(String.valueOf(Oprice));
-    }
-
-    public void buttonOnePiece(javafx.event.ActionEvent actionEvent) throws SQLException {
-        Double piece = 0.0 ;
-        String typeId = null;
-        try {
-            typeId = checkKlasicTypes(type);
-        }catch (Exception e){
-            String selection = "من فضلك ادخل النوع اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
-        }
-        String sqlscript = "SELECT * from kunafahut.types where id = '" + typeId + "'";
-        dbResSell = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeQuery(sqlscript);
-        while (dbResSell.next()) {
-            Otype = dbResSell.getString("type");
-            Oname = dbResSell.getString("name");
-            piece = Double.valueOf(dbResSell.getString("medium"));
-        }
-        Ono = 1.0;
-        Oquantity = "قطعة";
-        Oprice = piece;
-        onePrice.setText(String.valueOf(Oprice));
-    }
-
-    public void buttonTwoPieces(javafx.event.ActionEvent actionEvent) throws SQLException {
-        Double piece = 0.0 ;
-        String typeId = null;
-        try {
-            typeId = checkKlasicTypes(type);
-        }catch (Exception e){
-            String selection = "من فضلك ادخل النوع اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
-        }
-        String sqlscript = "SELECT * from kunafahut.types where id = '" + typeId + "'";
-        dbResSell = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeQuery(sqlscript);
-        while (dbResSell.next()) {
-            Otype = dbResSell.getString("type");
-            Oname = dbResSell.getString("name");
-            piece = Double.valueOf(dbResSell.getString("medium"));
-        }
-        Ono = 2.0;
-        Oquantity = "قطعة";
-        Oprice = piece*2;
-        onePrice.setText(String.valueOf(Oprice));
-
-
-    }
-
-    public void buttonThreePieces(javafx.event.ActionEvent actionEvent) throws SQLException {
-        Double piece = 0.0 ;
-        String typeId = null;
-        try {
-            typeId = checkKlasicTypes(type);
-        }catch (Exception e){
-            String selection = "من فضلك ادخل النوع اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
-        }
-        String sqlscript = "SELECT * from kunafahut.types where id = '" + typeId + "'";
-        dbResSell = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeQuery(sqlscript);
-        while (dbResSell.next()) {
-            Otype = dbResSell.getString("type");
-            Oname = dbResSell.getString("name");
-            piece = Double.valueOf(dbResSell.getString("medium"));
-        }
-        Ono = 3.0;
-        Oquantity = "قطعة";
-        Oprice = piece*3;
-        onePrice.setText(String.valueOf(Oprice));
-
-
-    }
-
-    public void buttonPiecesEnter(javafx.event.ActionEvent actionEvent) throws SQLException {
-        Double piece = 0.0 ;
-        Double piecesenter = 1.0 ;
-        String typeId = null;
-        try {
-            piecesenter = Double.valueOf(piecesno.getText());
-        }
-        catch (Exception e){
-            String selection = "من فضلك ادخل عدد القطع صحيح اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
-        }
-
-        try {
-            typeId = checkKlasicTypes(type);
-        }catch (Exception e){
-            String selection = "من فضلك ادخل النوع اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
-        }
-        String sqlscript = "SELECT * from kunafahut.types where id = '" + typeId + "'";
-        dbResSell = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeQuery(sqlscript);
-        while (dbResSell.next()) {
-            Otype = dbResSell.getString("type");
-            Oname = dbResSell.getString("name");
-            piece = Double.valueOf(dbResSell.getString("medium"));
-        }
-        Ono = piecesenter;
-        Oquantity = "قطعة";
-        Oprice = piece*piecesenter;
-        onePrice.setText(String.valueOf(Oprice));
-    }
-
-    // Form, Cups and Mix Buttons
-    public void buttonMediumEnter(javafx.event.ActionEvent actionEvent) throws SQLException {
-        Double kilo = 0.0;
-        Double piecesenter = 1.0;
-        String typeId = null;
-        try {
-            piecesenter = Double.valueOf(midno.getText());
+            String sqlscript = "SELECT * from aleef.orderdetails where orderNo = " + id + ";";
+            dbResAllTotal = (ResultSet) selling.initializeDB("jdbc:mysql://localhost:3306/aleef?verifyServerCertificate=false&useSSL=true", "moreda", "moreda2021").executeQuery(sqlscript);
+            while (dbResAllTotal.next()) {
+                TuserName.setText(dbResAllTotal.getString("clientName"));
+                Tphone.setText(dbResAllTotal.getString("clientPhone"));
+                Tlocation.setText(dbResAllTotal.getString("clientLocation"));
+                Tnote.setText(dbResAllTotal.getString("comment"));
+                idelivery.setText(dbResAllTotal.getString("delivery"));
+            }
         } catch (Exception e) {
-            String selection = "من فضلك ادخل عدد القطع صحيح اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
+            e.getCause();
         }
+    }
 
+    public void fetchِAuto(int id){
+        ResultSet dbResAllTotal;
         try {
-            typeId = checkKlasicTypes(type3);
+            String sqlscript = "SELECT * from aleef.orderdetails where clientPhone = " + id + ";";
+            dbResAllTotal = (ResultSet) selling.initializeDB("jdbc:mysql://localhost:3306/aleef?verifyServerCertificate=false&useSSL=true", "moreda", "moreda2021").executeQuery(sqlscript);
+            while (dbResAllTotal.next()) {
+                TuserName.setText(dbResAllTotal.getString("clientName"));
+                Tphone.setText(dbResAllTotal.getString("clientPhone"));
+                Tlocation.setText(dbResAllTotal.getString("clientLocation"));
+                Tnote.setText(dbResAllTotal.getString("comment"));
+                idelivery.setText(dbResAllTotal.getString("delivery"));
+            }
         } catch (Exception e) {
-            String selection = "من فضلك ادخل النوع اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
+            e.getCause();
         }
-        if (typeId.equals("added")) {
-            Oname = (String) comboNew.getValue();
-            String sqlscript = "SELECT * from kunafahut.added where name = '" + Oname + "'";
-            dbResSell = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true", "moreda", "moreda2021").executeQuery(sqlscript);
-            while (dbResSell.next()) {
-                Otype = dbResSell.getString("type");
-                Oquantity = dbResSell.getString("mediumName");
-                kilo = Double.valueOf(dbResSell.getString("mediumPrice"));
-            }
-
-
-        } else {
-
-            String sqlscript = "SELECT * from kunafahut.types where id = '" + typeId + "'";
-            dbResSell = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true", "moreda", "moreda2021").executeQuery(sqlscript);
-            while (dbResSell.next()) {
-                Otype = dbResSell.getString("type");
-                Oname = dbResSell.getString("name");
-                kilo = Double.valueOf(dbResSell.getString("medium"));
-            }
-
-            if (Otype.equals("كوب")) {
-                Oquantity = "صغير";
-            } else {
-                Oquantity = "وسط";
-            }
-        }
-            Ono = piecesenter;
-            Oprice = kilo * piecesenter;
-            onePrice.setText(String.valueOf(Oprice));
-        }
-
-
-    public void buttonBigEnter(javafx.event.ActionEvent actionEvent) throws SQLException {
-        Double kilo = 0.0 ;
-        Double piecesenter = 1.0 ;
-        String typeId = null;
-        try {
-            piecesenter = Double.valueOf(bigno.getText());
-        }
-        catch (Exception e){
-            String selection = "من فضلك ادخل عدد القطع صحيح اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
-        }
-
-        try {
-            typeId = checkKlasicTypes(type3);
-        }catch (Exception e){
-            String selection = "من فضلك ادخل النوع اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
-        }
-        if (typeId.equals("added")) {
-            Oname = (String) comboNew.getValue();
-            String sqlscript = "SELECT * from kunafahut.added where name = '" + Oname + "'";
-            dbResSell = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true", "moreda", "moreda2021").executeQuery(sqlscript);
-            while (dbResSell.next()) {
-                Otype = dbResSell.getString("type");
-                Oquantity = dbResSell.getString("bigName");
-                kilo = Double.valueOf(dbResSell.getString("bigPrice"));
-            }
-        }
-        else {
-            String sqlscript = "SELECT * from kunafahut.types where id = '" + typeId + "'";
-            dbResSell = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true", "moreda", "moreda2021").executeQuery(sqlscript);
-            while (dbResSell.next()) {
-                Otype = dbResSell.getString("type");
-                Oname = dbResSell.getString("name");
-                kilo = Double.valueOf(dbResSell.getString("big"));
-            }
-            Ono = piecesenter;
-            if (Otype.equals("كوب")) {
-                Oquantity = "وسط";
-            } else {
-                Oquantity = "كبير";
-            }
-        }
-        Ono = piecesenter;
-        Oprice = kilo*piecesenter;
-        onePrice.setText(String.valueOf(Oprice));
     }
-
-    // New Buttons
-    public void buttonOrise(javafx.event.ActionEvent actionEvent) throws SQLException {
-        Double kilo = 5.0 ;
-        Double piecesenter = 1.0 ;
-        String typeId = "Orise";
-        try {
-            piecesenter = Double.valueOf(newno.getText());
-        }
-        catch (Exception e){
-            String selection = "من فضلك ادخل عدد القطع صحيح اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
-        }
-        String sqlscript = "SELECT * from kunafahut.types where id = '" + typeId + "'";
-        dbResSell = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeQuery(sqlscript);
-        while (dbResSell.next()) {
-            Otype = dbResSell.getString("type");
-            Oname = dbResSell.getString("name");
-            kilo = Double.valueOf(dbResSell.getString("medium"));
-        }
-        Ono = piecesenter;
-        Oquantity = "";
-        Oprice = kilo*piecesenter;
-        onePrice.setText(String.valueOf(Oprice));
-    }
-
-    public void buttonFrise(javafx.event.ActionEvent actionEvent) throws SQLException {
-        Double kilo = 6.0 ;
-        Double piecesenter = 1.0 ;
-        String typeId = "Frise";
-        try {
-            piecesenter = Double.valueOf(newno.getText());
-        }
-        catch (Exception e){
-            String selection = "من فضلك ادخل عدد القطع صحيح اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
-        }
-        String sqlscript = "SELECT * from kunafahut.types where id = '" + typeId + "'";
-        dbResSell = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeQuery(sqlscript);
-        while (dbResSell.next()) {
-            Otype = dbResSell.getString("type");
-            Oname = dbResSell.getString("name");
-            kilo = Double.valueOf(dbResSell.getString("medium"));
-        }
-        Ono = piecesenter;
-        Oquantity = "";
-        Oprice = kilo*piecesenter;
-        onePrice.setText(String.valueOf(Oprice));
-    }
-
-    public void buttonDislut(javafx.event.ActionEvent actionEvent) throws SQLException {
-        Double kilo = 30.0 ;
-        Double piecesenter = 1.0 ;
-        String typeId = "Dislut";
-        try {
-            piecesenter = Double.valueOf(newno.getText());
-        }
-        catch (Exception e){
-            String selection = "من فضلك ادخل عدد القطع صحيح اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
-        }
-        String sqlscript = "SELECT * from kunafahut.types where id = '" + typeId + "'";
-        dbResSell = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeQuery(sqlscript);
-        while (dbResSell.next()) {
-            Otype = dbResSell.getString("type");
-            Oname = dbResSell.getString("name");
-            kilo = Double.valueOf(dbResSell.getString("medium"));
-        }
-        Ono = piecesenter;
-        Oquantity = "";
-        Oprice = kilo*piecesenter;
-        onePrice.setText(String.valueOf(Oprice));
-    }
-
-    public void buttonDisnut(javafx.event.ActionEvent actionEvent) throws SQLException {
-        Double kilo = 25.0 ;
-        Double piecesenter = 1.0 ;
-        String typeId = "Disnut";
-        try {
-            piecesenter = Double.valueOf(newno.getText());
-        }
-        catch (Exception e){
-            String selection = "من فضلك ادخل عدد القطع صحيح اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
-        }
-        String sqlscript = "SELECT * from kunafahut.types where id = '" + typeId + "'";
-        dbResSell = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeQuery(sqlscript);
-        while (dbResSell.next()) {
-            Otype = dbResSell.getString("type");
-            Oname = dbResSell.getString("name");
-            kilo = Double.valueOf(dbResSell.getString("medium"));
-        }
-        Ono = piecesenter;
-        Oquantity = "";
-        Oprice = kilo*piecesenter;
-        onePrice.setText(String.valueOf(Oprice));
-    }
-
-    public void buttoncofee(javafx.event.ActionEvent actionEvent) throws SQLException {
-        Double kilo = 8.0 ;
-        Double piecesenter = 1.0 ;
-        String typeId = "cofee";
-        try {
-            piecesenter = Double.valueOf(newno.getText());
-        }
-        catch (Exception e){
-            String selection = "من فضلك ادخل عدد القطع صحيح اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
-        }
-        String sqlscript = "SELECT * from kunafahut.types where id = '" + typeId + "'";
-        dbResSell = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeQuery(sqlscript);
-        while (dbResSell.next()) {
-            Otype = dbResSell.getString("type");
-            Oname = dbResSell.getString("name");
-            kilo = Double.valueOf(dbResSell.getString("medium"));
-        }
-        Ono = piecesenter;
-        Oquantity = "";
-        Oprice = kilo*piecesenter;
-        onePrice.setText(String.valueOf(Oprice));
-    }
-
-    public void buttonwater(javafx.event.ActionEvent actionEvent) throws SQLException {
-        Double kilo = 4.0 ;
-        Double piecesenter = 1.0 ;
-        String typeId = "water";
-        try {
-            piecesenter = Double.valueOf(newno.getText());
-        }
-        catch (Exception e){
-            String selection = "من فضلك ادخل عدد القطع صحيح اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
-        }
-        String sqlscript = "SELECT * from kunafahut.types where id = '" + typeId + "'";
-        dbResSell = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeQuery(sqlscript);
-        while (dbResSell.next()) {
-            Otype = dbResSell.getString("type");
-            Oname = dbResSell.getString("name");
-            kilo = Double.valueOf(dbResSell.getString("medium"));
-        }
-        Ono = piecesenter;
-        Oquantity = "";
-        Oprice = kilo*piecesenter;
-        onePrice.setText(String.valueOf(Oprice));
-    }
-
-    public void buttonpepsi(javafx.event.ActionEvent actionEvent) throws SQLException {
-        Double kilo = 6.0 ;
-        Double piecesenter = 1.0 ;
-        String typeId = "pepsi";
-        try {
-            piecesenter = Double.valueOf(newno.getText());
-        }
-        catch (Exception e){
-            String selection = "من فضلك ادخل عدد القطع صحيح اولاً ";
-            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
-            alert.showAndWait();
-        }
-        String sqlscript = "SELECT * from kunafahut.types where id = '" + typeId + "'";
-        dbResSell = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeQuery(sqlscript);
-        while (dbResSell.next()) {
-            Otype = dbResSell.getString("type");
-            Oname = dbResSell.getString("name");
-            kilo = Double.valueOf(dbResSell.getString("medium"));
-        }
-        Ono = piecesenter;
-        Oquantity = "";
-        Oprice = kilo*piecesenter;
-        onePrice.setText(String.valueOf(Oprice));
-    }
-    */
 
     public void addItem(javafx.event.ActionEvent actionEvent) {
         try {
@@ -750,9 +295,9 @@ public class selling implements Initializable {
                 e.printStackTrace();
                 System.out.println("dosen't updated!");
             }
+            clearAllOthers();
             sellingTable.getItems().clear();
             setSellingTable();
-            clearAllOthers();
         } catch (Exception e) {
             String selection = "من فضلك ادخل ادخل طلب اولاً ";
             Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
@@ -881,8 +426,10 @@ public class selling implements Initializable {
             while (dbResSell.next()) {
                 oblist.add(new moderTabel(dbResSell.getInt("rowNo"), dbResSell.getLong("barcode"), dbResSell.getString("type"), dbResSell.getString("name"), dbResSell.getDouble("no"), dbResSell.getString("quantity"), dbResSell.getDouble("price"), dbResSell.getDouble("disc"), dbResSell.getDouble("netprice")));
             }
-            TallDisc.setText(String.valueOf(allDisc + plusDisc));
-            TallTotal.setText(String.valueOf(allTotal - plusDisc));
+            allDisc += plusDisc;
+            allTotal -= plusDisc;
+            TallDisc.setText(String.valueOf(allDisc));
+            TallTotal.setText(String.valueOf(allTotal));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -961,7 +508,6 @@ public class selling implements Initializable {
         }
     }
 
-
     public static Statement initializeDB(String dburl, String dbuser, String dbpass) throws SQLException {
         // DB parameters
         Connection dbconn = null;
@@ -976,19 +522,13 @@ public class selling implements Initializable {
         return dbconn.createStatement();
 
     }
-
-    public String timeNow() {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-        return dtf.format(now);
-    }
     // this function for making new id unique and save them to variable called idgenerate
     public void setIdgenerate(){
         // coping data to another Field
         String sqlscript = "SELECT orderNo FROM orderdetails ORDER BY orderNo DESC LIMIT 1;";
         int getId=0;
         try {
-            ResultSet dbResGetId = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true", "moreda", "moreda2021").executeQuery(sqlscript);
+            ResultSet dbResGetId = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/aleef?verifyServerCertificate=false&useSSL=true", "moreda", "moreda2021").executeQuery(sqlscript);
             while (dbResGetId.next()){
                 getId = (int) dbResGetId.getDouble("orderNo");
             }
@@ -1011,7 +551,7 @@ public class selling implements Initializable {
         if (checkEmpty()==1){
             printing();
             userdata.outprint(idgenerate);
-            //userdata.bill();
+            clearUserData();
         }else {
             String selection = "من فضلك ادخل بيانات الاوردر ";
             Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
@@ -1019,20 +559,49 @@ public class selling implements Initializable {
         }
 
     }
-    public void menuPage(javafx.event.ActionEvent actionEvent){
-        try {
-            Parent userview = FXMLLoader.load(menuPage.class.getResource("../fxml/menuPage.fxml"));
-            Scene userscene = new Scene(userview);
-            Stage window = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
-            window.setScene(userscene);
-            window.setFullScreen(true);
-            window.show();
 
-        }catch (Exception e){
-            e.printStackTrace();
-            e.getCause();
+    public void clearUserData(){
+        TuserName.setText("");
+        Tphone.setText("");
+        Tlocation.setText("");
+        Tnote.setText("");
+        idelivery.setText("");
+        Orderdisc.setSelected(false);
+    }
+
+    public void menuPage(ActionEvent actionEvent){
+        if (ismod){
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("الخروج اثناء تعديل الاوردر");
+            alert.setContentText("هل تريد الخروج من التعديل وحذف الاوردر نهائياً؟");
+            ButtonType okButton = new ButtonType("نعم، اخرج", ButtonBar.ButtonData.YES);
+            ButtonType cancelButton = new ButtonType("لا، اكمل", ButtonBar.ButtonData.CANCEL_CLOSE);
+            alert.getButtonTypes().setAll(okButton, cancelButton);
+            alert.showAndWait().ifPresent(type -> {
+                if (type == okButton) {
+                    setIsmod(false);
+                    ordersConfig.droprowwithid(getIdmod());
+                    clearAllData();
+                } else {
+                    System.out.println("say nothing");
+                }
+            });
+        }
+        if (!ismod){
+            try {
+                Parent userview = FXMLLoader.load(menuPage.class.getResource("../fxml/menuPage.fxml"));
+                Scene userscene = new Scene(userview);
+                Stage window = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+                window.setScene(userscene);
+                window.show();
+
+            }catch (Exception e){
+                e.printStackTrace();
+                e.getCause();
+            }
         }
     }
+
     // this function is set to check if the preorder is saved and there's no data or not to make an order if not one return (0)
     public int checkEmpty(){
         int check = 0;
@@ -1061,7 +630,7 @@ public class selling implements Initializable {
         }catch(Exception e ){
             userphone = 0;
         }
-        username = Tname.getText();
+        username = TuserName.getText();
         userlocation = Tlocation.getText();
         comment = Tnote.getText();
         // if the mode is for modifying or fast print
@@ -1073,6 +642,8 @@ public class selling implements Initializable {
             setIdgenerate();
             id =idgenerate;
         }
+        // sync to the stock
+
         // coping data to another Field
         String sendOrderData = "insert into orders (orderNo, barcode, type, name, no, quantity, price, disc, netPrice)\n" +
                 "select ("+id+"),barcode , type, name, no, quantity, price, disc, netPrice from preorder;";
@@ -1093,5 +664,67 @@ public class selling implements Initializable {
             e.getCause();
         }
         clearAllData();
+    }
+
+    public static void sync(Long sid, String squan, Double sno, Boolean reverse){
+        String Aname = "";
+        Double Ano = 0.0;
+        String Bname = "";
+        Double Bno = 0.0;
+        Double BfromA = null;
+        // fetch data with barcode and store in the variables
+        String sqlscript = "SELECT * FROM details where  barcode = "+sid+";";
+        try {
+            ResultSet dbResGetId = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/aleef?verifyServerCertificate=false&useSSL=true", "moreda", "moreda2021").executeQuery(sqlscript);
+            while (dbResGetId.next()){
+                Aname = dbResGetId.getString("Aname");
+                Ano = dbResGetId.getDouble("Ano");
+                Bname = dbResGetId.getString("Bname");
+                Bno = dbResGetId.getDouble("Bno");
+                BfromA = dbResGetId.getDouble("BfromA");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if (!reverse){
+            if (squan.equals(Bname)){
+                if (sno <= Bno){
+                    Bno -= sno;
+                }else {
+                    if (BfromA != null){
+                        while (sno > 0){
+                            Bno += BfromA;
+                            Ano--;
+                            Bno -= sno;
+                            sno -= BfromA;
+                        }
+                    }else {
+                        String selection = "لا يوجد عناصر متاحة في المخزن من العنصر رقم "+sid+" ";
+                        Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
+                        alert.showAndWait();
+                    }
+                }
+            }else if (squan.equals(Aname)){
+                if (sno <= Ano){
+                    Ano -= sno;
+                }else {
+                    String selection = "لا يوجد عناصر متاحة في المخزن من العنصر رقم "+sid+" ";
+                    Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
+                    alert.showAndWait();
+                }
+            }
+        }else{
+            if (squan.equals(Bname)){ Bno += sno;}
+            else if (squan.equals(Aname)){Ano += sno;}
+        }
+        // Update the data to the database
+        String sendOrderDetails = "UPDATE  aleef.details SET Ano = "+Ano+",Bno = "+Bno+" WHERE barcode = "+sid+";";
+        try {
+            selling.initializeDB("jdbc:mysql://localhost:3306/aleef?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeUpdate(sendOrderDetails);
+        } catch (SQLException e) {
+            String selection = "لم يتم تعديل البيانات في المخزن يرجي المراجعه يدوياً ";
+            Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
+            alert.showAndWait();
+        }
     }
 }

@@ -211,7 +211,7 @@
             </HBox>
             <HBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="printing2" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="75.0" prefWidth="312.0" stylesheets="@../styleSheet/selling..css" text="طباعة" textAlignment="CENTER" textFill="#1cda32">
+                  <Button fx:id="printing2" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#printing1" prefHeight="75.0" prefWidth="312.0" stylesheets="@../styleSheet/selling..css" text="طباعة" textAlignment="CENTER" textFill="#1cda32">
                      <styleClass>
                         <String fx:value="hover-hand" />
                         <String fx:value="hover-gray" />
@@ -429,7 +429,7 @@
             </HBox>
          </children>
       </HBox>
-      <Button alignment="CENTER" layoutX="1148.0" layoutY="32.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="220.0" stylesheets="@../styleSheet/selling..css" text="القائمة الرئيسة" textAlignment="CENTER">
+      <Button alignment="CENTER" layoutX="1148.0" layoutY="32.0" mnemonicParsing="false" onAction="#menuPage" prefHeight="59.0" prefWidth="220.0" stylesheets="@../styleSheet/selling..css" text="القائمة الرئيسة" textAlignment="CENTER">
          <graphic>
             <ImageView fx:id="menuPageImage2" fitHeight="51.0" fitWidth="117.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -526,7 +526,7 @@
                         <URL value="@../styleSheet/selling..css" />
                      </stylesheets>
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </VBox.margin>
                   </Label>
                   <Label alignment="CENTER" prefHeight="56.0" prefWidth="231.0" style="-fx-background-radius: 50;" text="النوع">
@@ -542,7 +542,7 @@
                         <URL value="@../styleSheet/selling..css" />
                      </stylesheets>
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </VBox.margin>
                   </Label>
                   <Label alignment="CENTER" prefHeight="56.0" prefWidth="231.0" style="-fx-background-radius: 50;" text="الاسم">
@@ -558,7 +558,7 @@
                         <URL value="@../styleSheet/selling..css" />
                      </stylesheets>
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </VBox.margin>
                   </Label>
                   <Label alignment="CENTER" prefHeight="56.0" prefWidth="231.0" style="-fx-background-radius: 50;" text="الصنف">
@@ -574,7 +574,7 @@
                         <URL value="@../styleSheet/selling..css" />
                      </stylesheets>
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </VBox.margin>
                   </Label>
                   <Label alignment="CENTER" prefHeight="56.0" prefWidth="231.0" style="-fx-background-radius: 50;" text="العدد">
@@ -590,7 +590,7 @@
                         <URL value="@../styleSheet/selling..css" />
                      </stylesheets>
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </VBox.margin>
                   </Label>
                   <Label alignment="CENTER" prefHeight="56.0" prefWidth="231.0" style="-fx-background-radius: 50;" text="سعر الطلب">
@@ -606,7 +606,7 @@
                         <URL value="@../styleSheet/selling..css" />
                      </stylesheets>
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </VBox.margin>
                   </Label>
                   <Label alignment="CENTER" prefHeight="56.0" prefWidth="231.0" style="-fx-background-radius: 50;" text="إجمالي الطلب">
@@ -622,7 +622,7 @@
                         <URL value="@../styleSheet/selling..css" />
                      </stylesheets>
                      <VBox.margin>
-                        <Insets bottom="2.0" left="2.0" right="2.0" top="10.0" />
+                        <Insets bottom="10.0" left="5.0" right="5.0" top="10.0" />
                      </VBox.margin>
                   </Label>
                </children>

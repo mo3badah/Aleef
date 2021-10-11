@@ -17,9 +17,6 @@ import java.util.ResourceBundle;
 public class menuPage implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-
-
     }
     public  void gotoselling(javafx.event.ActionEvent actionEvent){
         try {
@@ -27,7 +24,6 @@ public class menuPage implements Initializable {
             Scene userscene = new Scene(userview);
             Stage window = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
             window.setScene(userscene);
-            window.setFullScreen(true);
             window.show();
 
         }catch (Exception e){
@@ -43,8 +39,28 @@ public class menuPage implements Initializable {
             Scene userscene = new Scene(userview);
             Stage window = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
             window.setScene(userscene);
-            window.setFullScreen(true);
             window.show();
+
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getCause();
+        }
+
+    }
+    public  void gotoDashboard(javafx.event.ActionEvent actionEvent){
+        try {
+            if (Main.isEnter()){
+                Parent userview = FXMLLoader.load(menuPage.class.getResource("../fxml/dashboard.fxml"));
+                Scene userscene = new Scene(userview);
+                Stage window = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+                window.setScene(userscene);
+                window.show();
+            }else {
+                String selection = "من فضلك ادخل الرقم السري الرئيسي ";
+                Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
+                alert.showAndWait();
+            }
+
 
         }catch (Exception e){
             e.printStackTrace();
@@ -59,7 +75,6 @@ public class menuPage implements Initializable {
                 Scene userscene = new Scene(userview);
                 Stage window = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
                 window.setScene(userscene);
-                window.setFullScreen(true);
                 window.show();
             }else {
                 String selection = "من فضلك ادخل الرقم السري الرئيسي ";
@@ -80,7 +95,6 @@ public class menuPage implements Initializable {
                 Scene userscene = new Scene(userview);
                 Stage window = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
                 window.setScene(userscene);
-                window.setFullScreen(true);
                 window.show();
             }else {
                 String selection = "من فضلك ادخل الرقم السري الرئيسي ";

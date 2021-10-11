@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,6 +13,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -97,6 +100,14 @@ public class itemConfig implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setUsersTable();
+        ibr.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode().equals(KeyCode.ENTER)) {
+                    fetchItem(Long.parseLong(ibr.getText()));
+                }
+            }
+        });
     }
 
     public void menuPage(javafx.event.ActionEvent actionEvent){
@@ -146,6 +157,7 @@ public class itemConfig implements Initializable {
                 setUsersTable();
             }
         }catch (Exception e){
+            e.printStackTrace();
             String selection = "من فضلك ادخل كل الخانات صحيحة اولاً وتأكد من ادخال الباركود صحيح ";
             Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
             alert.showAndWait();
@@ -212,6 +224,8 @@ public class itemConfig implements Initializable {
                 setUsersTable();
             }
         }catch (Exception e){
+            e.getCause();
+            e.printStackTrace();
             String selection = "من فضلك ادخل كل الخانات صحيحة اولاً وتأكد من ادخال الباركود صحيح ";
             Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
             alert.showAndWait();
@@ -224,28 +238,31 @@ public class itemConfig implements Initializable {
         tableRowId = detailsTabel.getSelectionModel().getSelectedIndex();
         if (!(tableRowId <= -1)) {
             bar = detailsTabel.getSelectionModel().getSelectedItem().barcode;
-            ResultSet dbResAllTotal;
-            try {
-                String sqlscript = "SELECT * from aleef.details where barcode = "+bar+";";
+            fetchItem(bar);
+        }
+    }
+    public void fetchItem(Long bar){
+        ResultSet dbResAllTotal;
+        try {
+            String sqlscript = "SELECT * from aleef.details where barcode = "+bar+";";
 
-                dbResAllTotal = (ResultSet) selling.initializeDB("jdbc:mysql://localhost:3306/aleef?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeQuery(sqlscript);
+            dbResAllTotal = (ResultSet) selling.initializeDB("jdbc:mysql://localhost:3306/aleef?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeQuery(sqlscript);
 
-                while (dbResAllTotal.next()) {
-                    ibr.setText(String.valueOf(dbResAllTotal.getLong("barcode")));
-                    ity.setText(dbResAllTotal.getString("type"));
-                    inm.setText(dbResAllTotal.getString("name"));
-                    ianm.setText(dbResAllTotal.getString("Aname"));
-                    iapr.setText(String.valueOf(dbResAllTotal.getDouble("Aprice")));
-                    iano.setText(String.valueOf(dbResAllTotal.getDouble("Ano")));
-                    ibnm.setText(dbResAllTotal.getString("Bname"));
-                    ibpr.setText(String.valueOf(dbResAllTotal.getDouble("Bprice")));
-                    ibno.setText(String.valueOf(dbResAllTotal.getDouble("Bno")));
-                    ibfa.setText(String.valueOf(dbResAllTotal.getDouble("BfromA")));
-                }
-
-            }catch (Exception e){
-                e.getCause();
+            while (dbResAllTotal.next()) {
+                ibr.setText(String.valueOf(dbResAllTotal.getLong("barcode")));
+                ity.setText(dbResAllTotal.getString("type"));
+                inm.setText(dbResAllTotal.getString("name"));
+                ianm.setText(dbResAllTotal.getString("Aname"));
+                iapr.setText(String.valueOf(dbResAllTotal.getDouble("Aprice")));
+                iano.setText(String.valueOf(dbResAllTotal.getDouble("Ano")));
+                ibnm.setText(dbResAllTotal.getString("Bname"));
+                ibpr.setText(String.valueOf(dbResAllTotal.getDouble("Bprice")));
+                ibno.setText(String.valueOf(dbResAllTotal.getDouble("Bno")));
+                ibfa.setText(String.valueOf(dbResAllTotal.getDouble("BfromA")));
             }
+
+        }catch (Exception e){
+            e.getCause();
         }
     }
 
@@ -272,32 +289,5 @@ public class itemConfig implements Initializable {
         tbno.setCellValueFactory(new PropertyValueFactory<>("Bno"));
         tbfa.setCellValueFactory(new PropertyValueFactory<>("BfromA"));
         detailsTabel.setItems(oblist2);
-
-        // filtered list
-        FilteredList<detailsTabel> filterData = new FilteredList<>(oblist2, b -> true);
-        ifilter.textProperty().addListener((observable, oldValue, newValue) -> {
-            filterData.setPredicate(detailsTabel1 -> {
-                if (newValue.isEmpty() || newValue==null){
-                    return true;
-                }
-                String searchKeyWord = newValue.toLowerCase();
-                if (detailsTabel1.getName().toLowerCase().contains(searchKeyWord)){
-                    return true;
-                }
-                else if (detailsTabel1.getType().toLowerCase().contains(searchKeyWord)){
-                    return true;
-                }
-                else if (String.valueOf(detailsTabel1.getBarcode()).contains(searchKeyWord)){
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            });
-        } );
-        SortedList<detailsTabel> sortedData = new SortedList<>(filterData);
-        sortedData.comparatorProperty().bind(detailsTabel.comparatorProperty());
-        detailsTabel.setItems(sortedData);
     }
-
 }

@@ -24,7 +24,7 @@
                      <children>
                         <HBox prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Button mnemonicParsing="false" onAction="#menuPage" prefHeight="59.0" prefWidth="252.0" text="القائمة الرئيسة">
+                              <Button mnemonicParsing="false" onAction="#menuPage" prefHeight="59.0" prefWidth="252.0" stylesheets="@../styleSheet/itemConfig.css" text="القائمة الرئيسة">
                                  <graphic>
                                     <ImageView fx:id="menuPageImage" fitHeight="51.0" fitWidth="117.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
@@ -42,31 +42,6 @@
                                     <String fx:value="shadow" />
                                  </styleClass>
                               </Label>
-                              <VBox alignment="CENTER" prefHeight="77.0" prefWidth="719.0">
-                                 <children>
-                                    <Button alignment="CENTER" mnemonicParsing="false" prefHeight="28.0" prefWidth="253.0" stylesheets="@../styleSheet/itemConfig.css" text="تصفية">
-                                       <font>
-                                          <Font name="Arabic Typesetting" size="24.0" />
-                                       </font>
-                                       <graphic>
-                                          <ImageView fx:id="bfilter" fitHeight="28.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@filter.png" />
-                                             </image>
-                                          </ImageView>
-                                       </graphic>
-                                    </Button>
-                                    <TextField fx:id="ifilter" alignment="CENTER" prefHeight="52.0" prefWidth="413.0" promptText="فلترة بالباركود او الاسم او النوع" stylesheets="@../styleSheet/itemConfig.css">
-                                       <styleClass>
-                                          <String fx:value="card" />
-                                          <String fx:value="margin1" />
-                                       </styleClass>
-                                       <VBox.margin>
-                                          <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-                                       </VBox.margin>
-                                    </TextField>
-                                 </children>
-                              </VBox>
                            </children>
                         </HBox>
                         <TableView fx:id="detailsTabel" onMouseClicked="#fetchItem2" prefHeight="306.0" prefWidth="1311.0" stylesheets="@../styleSheet/userConfig.css">

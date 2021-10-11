@@ -1,17 +1,18 @@
 package sample.controller;
 
+import io.github.escposjava.PrinterService;
+import io.github.escposjava.print.NetworkPrinter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -60,12 +61,16 @@ public class ordersConfig implements Initializable {
     @FXML
     private TableColumn<ordersTable, Integer> TorderNo;
 
+    @FXML
+    private TextField ifilter;
+
     ObservableList<ordersTable> oblist = FXCollections.observableArrayList();
+
     public void setOrdersTable(){
         ResultSet dbResAllTotal;
         try {
-            String sqlscript = "SELECT * from kunafahut.orderdetails ORDER BY orderTime DESC";
-            dbResAllTotal = (ResultSet) selling.initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeQuery(sqlscript);
+            String sqlscript = "SELECT * from aleef.orderdetails ORDER BY orderTime DESC";
+            dbResAllTotal = (ResultSet) selling.initializeDB("jdbc:mysql://localhost:3306/aleef?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeQuery(sqlscript);
             while (dbResAllTotal.next()) {
                 oblist.add(new ordersTable(dbResAllTotal.getInt("orderNo"),dbResAllTotal.getInt("clientPhone"), dbResAllTotal.getInt("delivery"),dbResAllTotal.getInt("totNetPrice"),dbResAllTotal.getDouble("price"),dbResAllTotal.getDouble("totDisc"),dbResAllTotal.getDouble("totPrice"),dbResAllTotal.getTimestamp("orderTime"),dbResAllTotal.getString("clientName"),dbResAllTotal.getString("clientLocation"),dbResAllTotal.getString("cachierName")));
             }
@@ -86,13 +91,48 @@ public class ordersConfig implements Initializable {
         Ttime.setCellValueFactory(new PropertyValueFactory<>("orderTime"));
         ordersTable.setItems(oblist);
 
+        // filtered list
+        FilteredList<ordersTable> filterData = new FilteredList<>(oblist, b -> true);
+        ifilter.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterData.setPredicate(ordersTable1 -> {
+                if (newValue.isEmpty() || newValue==null){
+                    return true;
+                }
+                String searchKeyWord = newValue.toLowerCase();
+                if (ordersTable1.getClientName().toLowerCase().contains(searchKeyWord)){
+                    return true;
+                }
+                else if (ordersTable1.getClientLocation().toLowerCase().contains(searchKeyWord)){
+                    return true;
+                }
+                else if (String.valueOf(ordersTable1.getOrderNo()).contains(searchKeyWord)){
+                    return true;
+                }
+                else if (String.valueOf(ordersTable1.getClientPhone()).contains(searchKeyWord)){
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+        } );
+        SortedList<ordersTable> sortedData = new SortedList<>(filterData);
+        sortedData.comparatorProperty().bind(ordersTable.comparatorProperty());
+        ordersTable.setItems(sortedData);
+
 
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setOrdersTable();
+//        NetworkPrinter printer = new NetworkPrinter("192.168.0.100", 9100);
+////        PrinterService printerService = new PrinterService(printer);
+////        printerService.print("                    عالم أليف                     ");
+////        printerService.cutFull();
+////        printerService.close();
     }
+
     public int idnoofselected(){
         int tableRowId = -1;
         int typed = 0;
@@ -102,44 +142,66 @@ public class ordersConfig implements Initializable {
         }
         return typed;
     }
-    public void droprowwithid(int typed){
-        String sqlscript = "DELETE FROM `kunafahut`.`orderdetails` WHERE `orderNo` ="+typed+"";
-        String sqlscript2 = "DELETE FROM `kunafahut`.`ordersdata` WHERE `orderNo` ="+typed+"";
+
+    public static void droprowwithid(int typed){
+        returnToStock(typed);
+        String sqlscript = "DELETE FROM `aleef`.`orderdetails` WHERE `orderNo` ="+typed+"";
+        String sqlscript2 = "DELETE FROM `aleef`.`orders` WHERE `orderNo` ="+typed+"";
         try {
-            selling.initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeUpdate(sqlscript);
-            selling.initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeUpdate(sqlscript2);
+            selling.initializeDB("jdbc:mysql://localhost:3306/aleef?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeUpdate(sqlscript);
+            selling.initializeDB("jdbc:mysql://localhost:3306/aleef?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeUpdate(sqlscript2);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    public void droprowwithid2(){
         ordersTable.getItems().clear();
         setOrdersTable();
     }
+
     public void dropTableRow(javafx.event.ActionEvent actionEvent){
 
         if (idnoofselected()!=0){
             droprowwithid(idnoofselected());
+            droprowwithid2();
         }else {
             String selection = "من فضلك حدد الصف المراد حذفة ";
             Alert alert = new Alert(Alert.AlertType.ERROR, " " + selection + " !!!", ButtonType.OK);
             alert.showAndWait();
         }
     }
-
-    public void preEditing(int typed){
-        String sqlscript1 = "DELETE FROM `kunafahut`.`preorder`;";
-        String sendOrderData = "insert into preorder ( type, name, no, quantity, price, disc, netPrice)\n" +
-                "select type, name, no, quantity, price, disc, netPrice from ordersdata WHERE `orderNo` ="+typed+";";
-        String sqlscript2 = "DELETE FROM `kunafahut`.`ordersdata` WHERE `orderNo` ="+typed+";";
+    public static void returnToStock(int id){
         try {
-            selling.initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeUpdate(sqlscript1);
-            selling.initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeUpdate(sendOrderData);
-            selling.initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeUpdate(sqlscript2);
+            String sqlscript3 = "SELECT * FROM `aleef`.`orders` WHERE `orderNo` ="+id+";";
+            // for return the value of the elements to the stock
+            ResultSet dbResGetId = (ResultSet) selling.initializeDB("jdbc:mysql://localhost:3306/aleef?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeQuery(sqlscript3);
+            while (dbResGetId.next()){
+                Long barcode = dbResGetId.getLong("barcode");
+                double no = dbResGetId.getDouble("no");
+                String quantity = dbResGetId.getString("quantity");
+                sample.controller.selling.sync(barcode,quantity,no, true);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    public void menuPage(javafx.event.ActionEvent actionEvent){
 
+    public void preEditing(int typed){
+        String sqlscript1 = "DELETE FROM `aleef`.`preorder`;";
+        String sendOrderData = "insert into preorder (barcode, type, name, no, quantity, price, disc, netPrice)\n" +
+                "select barcode, type, name, no, quantity, price, disc, netPrice from orders WHERE `orderNo` ="+typed+";";
+        returnToStock(typed);
+        String sqlscript2 = "DELETE FROM `aleef`.`orders` WHERE `orderNo` ="+typed+";";
+        try {
+            selling.initializeDB("jdbc:mysql://localhost:3306/aleef?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeUpdate(sqlscript1);
+            selling.initializeDB("jdbc:mysql://localhost:3306/aleef?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeUpdate(sendOrderData);
+            selling.initializeDB("jdbc:mysql://localhost:3306/aleef?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeUpdate(sqlscript2);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void menuPage(javafx.event.ActionEvent actionEvent){
         try {
             Parent userview = FXMLLoader.load(menuPage.class.getResource("../fxml/menuPage.fxml"));
             Scene userscene = new Scene(userview);
@@ -151,8 +213,8 @@ public class ordersConfig implements Initializable {
             e.printStackTrace();
             e.getCause();
         }
-
     }
+
     public void editOrder(javafx.event.ActionEvent actionEvent){
         if (idnoofselected()!=0){
             selling.setIsmod(true);
@@ -178,6 +240,7 @@ public class ordersConfig implements Initializable {
             alert.showAndWait();
         }
     }
+
     public void fastPrint(javafx.event.ActionEvent actionEvent){
         int id = idnoofselected();
         if (id!=0){

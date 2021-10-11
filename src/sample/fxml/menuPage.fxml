@@ -11,7 +11,7 @@
 
 <AnchorPane prefHeight="788.0" prefWidth="1388.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.controller.menuPage">
    <children>
-      <HBox prefHeight="694.0" prefWidth="1309.0">
+      <HBox prefHeight="480.0" prefWidth="1309.0">
          <children>
             <VBox prefHeight="694.0" prefWidth="650.0">
                <children>
@@ -101,6 +101,26 @@
                   </HBox>
                </children>
             </VBox>
+         </children>
+      </HBox>
+      <HBox layoutX="361.0" layoutY="480.0" prefHeight="237.0" prefWidth="535.0">
+         <children>
+            <Button fx:id="printing231" mnemonicParsing="false" onAction="#gotoDashboard" prefHeight="200.0" prefWidth="610.0" stylesheets="@../styleSheet/menuPage.css" text="لوحة العرض" textFill="#1cda32">
+               <styleClass>
+                  <String fx:value="hover-hand" />
+                  <String fx:value="hover-gray" />
+               </styleClass>
+               <HBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </HBox.margin>
+               <graphic>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/dashboard.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </HBox>
    </children>

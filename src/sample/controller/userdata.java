@@ -3,6 +3,8 @@ package sample.controller;
 import com.jfoenix.controls.JFXBadge;
 import com.sun.javafx.print.PrintHelper;
 import com.sun.javafx.print.Units;
+import io.github.escposjava.PrinterService;
+import io.github.escposjava.print.NetworkPrinter;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -120,7 +122,7 @@ public class userdata implements Initializable {
         // coping data to another Field
         String sqlscript = "SELECT * FROM orderdetails where  orderNo = "+id+";";
         try {
-            ResultSet dbResGetId = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true", "moreda", "moreda2021").executeQuery(sqlscript);
+            ResultSet dbResGetId = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/aleef?verifyServerCertificate=false&useSSL=true", "moreda", "moreda2021").executeQuery(sqlscript);
             while (dbResGetId.next()){
                 idgenerate = dbResGetId.getInt("orderNo");
                 orderTime = dbResGetId.getTimestamp("orderTime");
@@ -137,31 +139,6 @@ public class userdata implements Initializable {
             e.printStackTrace();
         }
     }
-    public void savingNewData(){
-        try {
-            delivery = Integer.parseInt(Tdelivery.getText());
-            username = TuserName.getText();
-            userphone = Integer.parseInt((Tphone.getText()));
-            userlocation = Tlocation.getText();
-            comment = Tcomment.getText();
-        }catch (Exception e){
-            e.getCause();
-        }
-        // coping data to another Field
-        String sendOrderDetails = "UPDATE orderdetails set clientName = '"+username+"',clientPhone = "+userphone+",clientLocation = '"+userlocation+"',comment = '"+comment+"', delivery = "+delivery+", totNetPrice = totPrice+delivery where orderNo = "+idgenerate+";";
-
-        try {
-            initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true","moreda","moreda2021").executeUpdate(sendOrderDetails);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            e.getCause();
-        }
-
-    }
-
-
-
     public static Statement initializeDB(String dburl, String dbuser, String dbpass) throws SQLException {
         // DB parameters
         Connection dbconn = null;
@@ -206,6 +183,8 @@ public class userdata implements Initializable {
         }
 
     }
+
+
     public static void printNode(Node node) {
 
         Printer printer = Printer.getDefaultPrinter();
@@ -226,15 +205,14 @@ public class userdata implements Initializable {
         }
 
     }
-
     //*** prepare text for printing
     public static Node getPrintableText(){
 
         Label text = new Label();
 
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("                    كنافة هت                          \n");
-        stringBuilder.append("                       01006318817                     \n");
+        stringBuilder.append("                    عالم أليف                        \n");
+        stringBuilder.append("                       01552621818                     \n");
         stringBuilder.append("-------------------------------------------------" + "\n");
         stringBuilder.append("          رقم الاوردر   :                    "+idgenerate+" \n");
         stringBuilder.append("    الوفت والتاريخ:  "+orderTime+" \n");
@@ -245,10 +223,11 @@ public class userdata implements Initializable {
         stringBuilder.append( comment+"  \n");
         stringBuilder.append("-------------------------------------------------" + "\n");
         stringBuilder.append("     الصنف        الكمية    الخصم الإجمالي" + "\n");
-        String sqlscript = "SELECT * FROM ordersdata where orderNo = "+idgenerate+";";
+        String sqlscript = "SELECT * FROM orders where orderNo = "+idgenerate+";";
         try {
-            ResultSet dbResGetId = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true", "moreda", "moreda2021").executeQuery(sqlscript);
+            ResultSet dbResGetId = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/aleef?verifyServerCertificate=false&useSSL=true", "moreda", "moreda2021").executeQuery(sqlscript);
             while (dbResGetId.next()){
+                Long barcode = (Long) dbResGetId.getLong("barcode");
                 String type = dbResGetId.getString("type");
                 String name = dbResGetId.getString("name");
                 double no = dbResGetId.getDouble("no");
@@ -257,13 +236,14 @@ public class userdata implements Initializable {
                 double total = dbResGetId.getDouble("netPrice");
                 stringBuilder.append("===========================\n");
                 stringBuilder.append( type+" "+name+" \t "+no+" "+quantity+" \t "+discount+" \t "+total+" * \n");
+                sample.controller.selling.sync(barcode,quantity,no, false);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         String sqlscript2 = "SELECT * FROM orderdetails  where orderNo = "+idgenerate+";";
         try {
-            ResultSet dbResGetId = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/KunafaHut?verifyServerCertificate=false&useSSL=true", "moreda", "moreda2021").executeQuery(sqlscript2);
+            ResultSet dbResGetId = (ResultSet) initializeDB("jdbc:mysql://localhost:3306/aleef?verifyServerCertificate=false&useSSL=true", "moreda", "moreda2021").executeQuery(sqlscript2);
             while (dbResGetId.next()){
 
                 price = dbResGetId.getDouble("price");
@@ -280,16 +260,12 @@ public class userdata implements Initializable {
         stringBuilder.append("      الدليفري  :    "+"\t\t\t\t"+delivery+"\n");
         stringBuilder.append("       الإجمالي  :    "+"\t\t\t\t"+totnetprice+"\n");
         stringBuilder.append("--------------------------------------------\n");
-        stringBuilder.append( "        سهرتك تحلي في رمضان مع كنافة هت               "+"\n");
-        stringBuilder.append( "            المجاورة السابعة-بجوار عالم أليف                "+"\n");
+        stringBuilder.append( "        مع عالم اليف مكانك الموثوق فيه               "+"\n");
+        stringBuilder.append( "              المجاورة السابعة                        "+"\n");
         text.setText(stringBuilder.toString());
         return text;
     }
-    //*** issue print command
-    public void printReceipt(javafx.event.ActionEvent actionEvent){
-        savingNewData();
-        printNode(getPrintableText());
-    }
+
     public static void outprint(int id){
         getGenerated(id);
         printNode(getPrintableText());

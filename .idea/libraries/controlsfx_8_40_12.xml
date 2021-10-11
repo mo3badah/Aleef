@@ -6,6 +6,9 @@
       <root url="jar://$PROJECT_DIR$/lib/jfoenix-8.0.5.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/mysql-connector-java-8.0.11.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/newpos.jar!/" />
+      <root url="jar://$PROJECT_DIR$/esc-pos-java-master/target/escposjava-1.0-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/esc-pos-java-master/target/original-escposjava-1.0-SNAPSHOT.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/escposjava-1.0-SNAPSHOT.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

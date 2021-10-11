@@ -81,8 +81,6 @@ public class userConfig implements Initializable {
             Scene userscene = new Scene(userview);
             Stage window = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
             window.setScene(userscene);
-            window.setFullScreen(true);
-            window.setFullScreenExitHint("");
             window.show();
 
         }catch (Exception e){

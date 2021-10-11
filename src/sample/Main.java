@@ -29,10 +29,13 @@ public class Main extends Application {
     Stage primarystage;
     static Parent root;
 
+    public static void setConsoleVisible() {
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         primarystage = primaryStage;
-        root = FXMLLoader.load(getClass().getResource("fxml/selling.fxml"));
+        root = FXMLLoader.load(getClass().getResource("fxml/itemConfig.fxml"));
         primarystage.setTitle("عالم أليف");
         primaryStage.setMaximized(true);
         primarystage.setScene(new Scene(root));
@@ -48,7 +51,7 @@ public class Main extends Application {
 
     public static void showuserdata() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Main.class.getResource("fxml/signIn.fxml"));
+        loader.setLocation(Main.class.getResource("fxml/dashboard.fxml"));
         BorderPane userdata = loader.load();
         Stage userdatastage;
 

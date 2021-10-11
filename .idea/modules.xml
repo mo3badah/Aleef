@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/aleem3leef.iml" filepath="$PROJECT_DIR$/aleem3leef.iml" />
+      <module fileurl="file://$PROJECT_DIR$/esc-pos-java-master/escposjava.iml" filepath="$PROJECT_DIR$/esc-pos-java-master/escposjava.iml" />
     </modules>
   </component>
 </project>
