@@ -24,6 +24,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import static java.time.LocalTime.now;
+
 public class dashboardController implements Initializable{
     @FXML
     private LineChart<String, Integer> firstPane;
@@ -122,7 +124,9 @@ public class dashboardController implements Initializable{
     }
     private void loadMainData(){
         try{
-            String sqlscriptDay = "select count(orderNo) as num, sum(totPrice) as price from aleef.orderdetails where orderTime >= now() - INTERVAL 1 DAY;";
+            String sqlscriptDay;
+            if (now().getHour()>= 12){sqlscriptDay = "select count(orderNo) as num, sum(totPrice) as price from kunafahut.orderdetails where orderTime >= interval 12 hour + curdate();";
+            }else {sqlscriptDay = "select count(orderNo) as num, sum(totPrice) as price from kunafahut.orderdetails where orderTime >= interval 12 hour + curdate() - INTERVAL 1 DAY;"; }
             String sqlscriptWeek = "select count(orderNo) as num, sum(totPrice) as price from aleef.orderdetails where orderTime >= now() - INTERVAL 1 WEEK;";
             String sqlscriptMonth = "select count(orderNo) as num, sum(totPrice) as price from aleef.orderdetails where orderTime >= now() - INTERVAL 1 MONTH;";
 

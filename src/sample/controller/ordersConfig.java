@@ -187,7 +187,7 @@ public class ordersConfig implements Initializable {
     }
 
     public void preEditing(int typed){
-        String sqlscript1 = "DELETE FROM `aleef`.`preorder`;";
+        String sqlscript1 = "truncate `aleef`.`preorder`;";
         String sendOrderData = "insert into preorder (barcode, type, name, no, quantity, price, disc, netPrice)\n" +
                 "select barcode, type, name, no, quantity, price, disc, netPrice from orders WHERE `orderNo` ="+typed+";";
         returnToStock(typed);

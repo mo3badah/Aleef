@@ -228,14 +228,7 @@ public class selling implements Initializable {
                 }
             }
         });
-        Tphone.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                if (event.getCode().equals(KeyCode.ENTER)) {
-                    fetchِAuto(Integer.parseInt(Tphone.getText()));
-                }
-            }
-        });
+
         ino.textProperty().addListener((observable, oldValue, newValue) -> {
             updateUnitPrice();
         });

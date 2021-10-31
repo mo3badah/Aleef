@@ -15,15 +15,18 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 
+import java.sql.*;
+import java.time.LocalDateTime.*;
 import java.awt.*;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
 import java.util.EventObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static java.time.LocalTime.now;
 
 public class Main extends Application {
     Stage primarystage;
@@ -40,13 +43,9 @@ public class Main extends Application {
         primaryStage.setMaximized(true);
         primarystage.setScene(new Scene(root));
         primarystage.show();
-
     }
-
     public static void main(String[] args) {
         launch(args);
-
-
     }
 
     public static void showuserdata() throws IOException {
